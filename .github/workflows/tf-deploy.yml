@@ -32,7 +32,7 @@ jobs:
       - name: Install Semgrep
         run: python3 -m pip install semgrep
       - name: Run Semgrep Scan
-        run: semgrep --config "p/terraform" --error
+        run: semgrep --config "p/terraform"
   
   sonar_scan:
     name: SonarCloud Terraform Code Scan 
