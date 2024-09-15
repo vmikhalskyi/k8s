@@ -1,0 +1,716 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: development
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email-deployment
+  namespace: development
+  labels:
+    app: email
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: email
+  template:
+    metadata:
+      labels:
+        app: email
+    spec:
+      containers:
+        - name: email
+          image: gcr.io/google-samples/microservices-demo/emailservice:v0.10.1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+            - name: DISABLE_PROFILER
+              value: "1"
+          livenessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 8080
+          readinessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: email-service
+  namespace: development
+spec:
+  selector:
+    app: email
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommendation-deployment
+  namespace: development
+  labels:
+    app: recommendation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recommendation
+  template:
+    metadata:
+      labels:
+        app: recommendation
+    spec:
+      containers:
+        - name: recommendation
+          image: gcr.io/google-samples/microservices-demo/recommendationservice:v0.10.1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+            - name: PRODUCT_CATALOG_SERVICE_ADDR
+              value: "productcatalog-service"
+            - name: DISABLE_PROFILER
+              value: "1"
+          livenessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 8080
+          readinessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommendation-service
+  namespace: development
+spec:
+  selector:
+    app: recommendation
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productcatalog-deployment
+  namespace: development
+  labels:
+    app: productcatalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: productcatalog
+  template:
+    metadata:
+      labels:
+        app: productcatalog
+    spec:
+      containers:
+        - name: productcatalog
+          image: gcr.io/google-samples/microservices-demo/productcatalogservice:v0.10.1
+          ports:
+            - containerPort: 3550
+          env:
+            - name: PORT
+              value: "3550"
+            - name: DISABLE_PROFILER
+              value: "1"
+          livenessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 3550
+          readinessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 3550
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: productcatalog-service
+  namespace: development
+spec:
+  selector:
+    app: productcatalog
+  ports:
+    - protocol: TCP
+      port: 3550
+      targetPort: 3550
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-deployment
+  namespace: development
+  labels:
+    app: payment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment
+  template:
+    metadata:
+      labels:
+        app: payment
+    spec:
+      containers:
+        - name: payment
+          image: gcr.io/google-samples/microservices-demo/paymentservice:v0.10.1
+          ports:
+            - containerPort: 50051
+          env:
+            - name: PORT
+              value: "50051"
+            - name: DISABLE_PROFILER
+              value: "1"
+          livenessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 50051
+          readinessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 50051
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+  namespace: development
+spec:
+  selector:
+    app: payment
+  ports:
+    - protocol: TCP
+      port: 50051
+      targetPort: 50051
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-deployment
+  namespace: development
+  labels:
+    app: currency
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: currency
+  template:
+    metadata:
+      labels:
+        app: currency
+    spec:
+      containers:
+        - name: currency
+          image: gcr.io/google-samples/microservices-demo/currencyservice:v0.10.1
+          ports:
+            - containerPort: 7000
+          env:
+            - name: PORT
+              value: "7000"
+            - name: DISABLE_PROFILER
+              value: "1"
+          livenessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 7000
+          readinessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 7000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: currency-service
+  namespace: development
+spec:
+  selector:
+    app: currency
+  ports:
+    - protocol: TCP
+      port: 7000
+      targetPort: 7000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipping-deployment
+  namespace: development
+  labels:
+    app: shipping
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shipping
+  template:
+    metadata:
+      labels:
+        app: shipping
+    spec:
+      containers:
+        - name: shipping
+          image: gcr.io/google-samples/microservices-demo/shippingservice:v0.10.1
+          ports:
+            - containerPort: 50051
+          env:
+            - name: PORT
+              value: "50051"
+            - name: DISABLE_PROFILER
+              value: "1"
+          livenessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 50051
+          readinessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 50051
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipping-service
+  namespace: development
+spec:
+  selector:
+    app: shipping
+  ports:
+    - protocol: TCP
+      port: 50051
+      targetPort: 50051
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ad-deployment
+  namespace: development
+  labels:
+    app: ad
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ad
+  template:
+    metadata:
+      labels:
+        app: ad
+    spec:
+      containers:
+        - name: ad
+          image: gcr.io/google-samples/microservices-demo/adservice:v0.10.1
+          ports:
+            - containerPort: 9555
+          env:
+            - name: PORT
+              value: "9555"
+            - name: DISABLE_PROFILER
+              value: "1"
+          livenessProbe:
+            periodSeconds: 20
+            grpc:
+              port: 9555
+          readinessProbe:
+            periodSeconds: 20
+            grpc:
+              port: 9555
+          resources:
+            requests:
+              cpu: 200m
+              memory: 180Mi
+            limits:
+              cpu: 300m
+              memory: 300Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ad-service
+  namespace: development
+spec:
+  selector:
+    app: ad
+  ports:
+    - protocol: TCP
+      port: 9555
+      targetPort: 9555
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-deployment
+  namespace: development
+  labels:
+    app: cart
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cart
+  template:
+    metadata:
+      labels:
+        app: cart
+    spec:
+      containers:
+        - name: cart
+          image: gcr.io/google-samples/microservices-demo/cartservice:v0.10.1
+          ports:
+            - containerPort: 7070
+          env:
+            - name: PORT
+              value: "7070"
+            - name: REDIS_ADDR
+              value: "redis-cart-service:6379"
+            - name: DISABLE_PROFILER
+              value: "1"
+          livenessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 7070
+          readinessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 7070
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart-service
+  namespace: development
+spec:
+  selector:
+    app: cart
+  ports:
+    - protocol: TCP
+      port: 7070
+      targetPort: 7070
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cart-deployment
+  namespace: development
+  labels:
+    app: redis-cart
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-cart
+  template:
+    metadata:
+      labels:
+        app: redis-cart
+    spec:
+      containers:
+        - name: redis-cart
+          image: redis:alpine
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+          livenessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            tcpSocket:
+              port: 6379
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            tcpSocket:
+              port: 6379
+          resources:
+            requests:
+              cpu: 70m
+              memory: 200Mi
+            limits:
+              cpu: 125m
+              memory: 300Mi
+      volumes:
+        - name: redis-data
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cart-service
+  namespace: development
+spec:
+  selector:
+    app: redis-cart
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout-deployment
+  namespace: development
+  labels:
+    app: checkout
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: checkout
+  template:
+    metadata:
+      labels:
+        app: checkout
+    spec:
+      containers:
+        - name: checkout
+          image: gcr.io/google-samples/microservices-demo/checkoutservice:v0.10.1
+          ports:
+            - containerPort: 5050
+          env:
+            - name: PORT
+              value: "5050"
+            - name: PRODUCT_CATALOG_SERVICE_ADDR
+              value: "productcatalog-service:3550"
+            - name: SHIPPING_SERVICE_ADDR
+              value: "shipping-service:50051"
+            - name: PAYMENT_SERVICE_ADDR
+              value: "payment-service:50051"
+            - name: EMAIL_SERVICE_ADDR
+              value: "email-service:5000"
+            - name: CURRENCY_SERVICE_ADDR
+              value: "currency-service:7000"
+            - name: CART_SERVICE_ADDR
+              value: "cart-service:7070"
+            - name: DISABLE_PROFILER
+              value: "1"
+          livenessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 5050
+          readinessProbe:
+            periodSeconds: 5
+            grpc:
+              port: 5050
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkout-service
+  namespace: development
+spec:
+  selector:
+    app: checkout
+  ports:
+    - protocol: TCP
+      port: 5050
+      targetPort: 5050
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: development
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: gcr.io/google-samples/microservices-demo/frontend:v0.10.1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+            - name: PRODUCT_CATALOG_SERVICE_ADDR
+              value: "productcatalog-service:3550"
+            - name: SHIPPING_SERVICE_ADDR
+              value: "shipping-service:50051"
+            - name: PAYMENT_SERVICE_ADDR
+              value: "payment-service:50051"
+            - name: EMAIL_SERVICE_ADDR
+              value: "email-service:5000"
+            - name: CURRENCY_SERVICE_ADDR
+              value: "currency-service:7000"
+            - name: CART_SERVICE_ADDR
+              value: "cart-service:7070"
+            - name: RECOMMENDATION_SERVICE_ADDR
+              value: "recommendation-service:8080"
+            - name: CHECKOUT_SERVICE_ADDR
+              value: "checkout-service:5050"
+            - name: AD_SERVICE_ADDR
+              value: "ad-service:9555"
+            - name: ENABLE_PROFILER
+              value: "0"
+            - name: SHOPPING_ASSISTANT_SERVICE_ADDR
+              value: "shoppingassistantservice:80"
+          livenessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              path: "/_healthz"
+              port: 8080
+              httpHeaders:
+                - name: "Cookie"
+                  value: "shop_session-id=x-liveness-probe"
+          readinessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              path: "/_healthz"
+              port: 8080
+              httpHeaders:
+                - name: "Cookie"
+                  value: "shop_session-id=x-liveness-probe"
+          resources:
+            requests:
+              cpu: 125m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 300Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: development
+spec:
+  type: NodePort
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30007
+---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: alb-ingress-rules
+#   annotations:
+#     alb.ingress.kubernetes.io/load-balancer-name: "alb-ingress"
+#     alb.ingress.kubernetes.io/ip-address-type: ipv4
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+#     alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+#     alb.ingress.kubernetes.io/healthcheck-interval-seconds: "15"
+#     alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+#     alb.ingress.kubernetes.io/healthy-threshold-count: "5"
+#     alb.ingress.kubernetes.io/unhealthy-threshold-count: "5"
+#     alb.ingress.kubernetes.io/success-codes: "200"
+#     alb.ingress.kubernetes.io/target-type: "ip"
+#     alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:000685044917:certificate/9a858910-e4bf-4f64-91f3-a6e7b0cf15c7" # Replace with your ACM certificate ARN
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+#     alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+#     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=300
+
+# spec:
+#   ingressClassName: ingres-class
+#   rules:
+#     - host: k8s.mikhalskyi.space
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: ssl-redirect
+#                 port:
+#                   name: use-annotation
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: adminer-service
+#                 port:
+#                   number: 80
+#   tls:
+#     - hosts:
+#         - k8s.mikhalskyi.space

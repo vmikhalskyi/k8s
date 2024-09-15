@@ -1,0 +1,61 @@
+name: Terraform CI/CD Pipeline
+
+on:
+  pull_request:
+    branches:
+      - dev
+    paths:
+      - 'terraform/**'
+  push:
+    branches:
+      - dev
+    paths:
+      - 'terraform/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select environment to deploy to'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - prod
+
+jobs:
+  semgrep_scan:
+    name: Semgrep Terraform Code Scan 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Install Semgrep
+        run: python3 -m pip install semgrep
+      - name: Run Semgrep Scan
+        run: semgrep --config "p/terraform" --error
+  
+  sonar_scan:
+    name: SonarCloud Terraform Code Scan 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Run SonarCloud Scan 
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: 'terraform/'  
+          args: >
+            -Dsonar.organization=vmikhalskyi
+            -Dsonar.projectKey=k8s
+
+
+
+
+
+
+
+
+
+
