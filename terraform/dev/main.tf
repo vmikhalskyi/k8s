@@ -1,3 +1,13 @@
+data "aws_eks_cluster" "example" {
+  name = module.k8s-cluster.eks_cluster_endpoint.name
+  depends_on = [ module.k8s-cluster ]
+}
+
+data "aws_eks_cluster_auth" "example" {
+  name = data.aws_eks_cluster.example.name
+  depends_on = [ module.k8s-cluster ]
+}
+
 module "network" {
     source = "../modules/network"
     availability_zones = var.availability_zones
@@ -28,4 +38,19 @@ module "k8s-addons" {
     eks_cluster_name = module.k8s-cluster.eks_cluster_endpoint.name
     eks_addons = var.eks_addons
     depends_on = [ module.k8s-cluster, module.k8s-node-group ]
+}
+
+module "argocd-initial" {
+    source = "../modules/argocd-initial"
+    chart_version = "5.46.2"
+    eks_cluster_name = module.k8s-cluster.eks_cluster_endpoint.name
+    depends_on = [ module.k8s-cluster ]
+}
+
+module "argocd-root" {
+    source = "../modules/argocd-root"
+    git_source_path = var.git_source_path
+    git_source_repo_url = var.git_source_repo_url
+    git_source_target_revision = var.git_source_target_revision
+    depends_on = [ module.k8s-cluster ]
 }
