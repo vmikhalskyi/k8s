@@ -54,11 +54,10 @@ jobs:
             -Dsonar.projectKey=k8s
   
   plan_dev:
-    name: Terraform plan 
     if: (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/dev')
     uses: ./.github/workflows/tf-plan.yml
     with: 
-      ENV: dev
+      ENV: ${{ github.event.inputs.environment }}
     secrets:
       AWS_ROLE: ${{ secrets.AWS_ROLE_DEV }}
 
