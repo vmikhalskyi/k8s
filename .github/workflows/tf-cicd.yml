@@ -66,6 +66,7 @@ jobs:
   apply_dev:
     if: (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/dev')
     uses: ./.github/workflows/tf-apply.yml
+    needs: plan_dev
     with: 
       ENV: ${{ github.event.inputs.environment }}
       TF_STATE_BUCKET: tfstate-mikhalskyi
