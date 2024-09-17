@@ -32,7 +32,8 @@ jobs:
       - name: Install Semgrep
         run: python3 -m pip install semgrep
       - name: Run Semgrep Scan
-        run: semgrep --config "p/terraform"
+        working-directory: terraform/
+        run: semgrep --config "p/terraform"        
   
   sonar_scan:
     name: SonarCloud Terraform Code Scan 
@@ -49,6 +50,16 @@ jobs:
           args: >
             -Dsonar.organization=vmikhalskyi
             -Dsonar.projectKey=k8s
+  
+  build:
+    name: Terraform plan 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code 
+        uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
 
 
 

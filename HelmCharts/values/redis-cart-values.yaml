@@ -1,0 +1,11 @@
+appName: redis-cart
+namespaceName: development
+appImage: redis
+appVersion: alpine
+appReplicasCount: 1
+containerPort: 6379
+volumeName: redis-data
+containerMountPath: /data
+servicePort: 6379
+serviceType: ClusterIP
+healthProbePeriodSeconds: 10

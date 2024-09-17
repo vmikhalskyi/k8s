@@ -1,0 +1,14 @@
+appName: productcatalog
+namespaceName: development
+appImage: gcr.io/google-samples/microservices-demo/productcatalogservice
+appVersion: v0.10.1
+appReplicasCount: 1
+containerPort: 3550
+containerEnvVars:
+- name: PORT 
+  value: "3550"
+- name: DISABLE_PROFILER
+  value: "1"
+servicePort: 3550
+serviceType: ClusterIP
+healthProbePeriodSeconds: 10
