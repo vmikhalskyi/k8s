@@ -63,6 +63,16 @@ jobs:
     secrets:
       AWS_ROLE: ${{ secrets.AWS_ROLE_DEV }}
 
+  apply_dev:
+    if: (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/dev')
+    uses: ./.github/workflows/tf-apply.yml
+    with: 
+      ENV: ${{ github.event.inputs.environment }}
+      TF_STATE_BUCKET: tfstate-mikhalskyi
+      TF_STATE_PATH: dev-state/state.tfstate
+    secrets:
+      AWS_ROLE: ${{ secrets.AWS_ROLE_DEV }}
+
       
 
 

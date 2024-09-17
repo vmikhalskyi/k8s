@@ -16,6 +16,9 @@ on:
       AWS_ROLE:
         required: true
 
+env:
+  AWS_DEFAULT_REGION: us-east-1
+
 jobs:
   plan:
     runs-on: ubuntu-latest
