@@ -38,7 +38,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           audience: personal-aws-02
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
-          role-duration-seconds: 900
+          role-session-name: terraform-plan-session
 
       - name: Terraform Init
         working-directory: "terraform/${{ inputs.ENV }}"
