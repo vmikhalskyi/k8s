@@ -25,7 +25,6 @@ jobs:
     permissions:
       id-token: write  
       contents: read
-    environment: ${{ inputs.ENV }}
     steps:
       - name: Checkout Code 
         uses: actions/checkout@v4
@@ -36,7 +35,7 @@ jobs:
       - name: AWS Configure OIDC credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::000685044917:role/gha-role-deploy
+          role-to-assume: ${{ secrets.AWS_ROLE }}
           audience: personal-aws-02
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
           role-session-name: terraform-apply-session
