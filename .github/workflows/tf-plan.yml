@@ -22,10 +22,6 @@ jobs:
         
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-        
-      - name: Terraform Validate
-        working-directory: "terraform/${{ inputs.ENV }}"
-        run: terraform validate
 
       - name: AWS Configure OIDC credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -37,6 +33,10 @@ jobs:
       - name: Terraform Init
         working-directory: "terraform/${{ inputs.ENV }}"
         run: terraform init
+
+      - name: Terraform Validate
+        working-directory: "terraform/${{ inputs.ENV }}"
+        run: terraform validate
 
       - name: Terraform Plan
         working-directory: "terraform/${{ inputs.ENV }}"
