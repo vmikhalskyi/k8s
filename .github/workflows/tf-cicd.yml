@@ -57,7 +57,7 @@ jobs:
     name: Terraform plan 
     runs-on: ubuntu-latest
     if: (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/dev')
-    uses: ./.github/reusable/tf-plan.yml
+    uses: ./.github/workflows/tf-plan.yml
     with: 
       ENV: ${{ github.event.inputs.environment }}
     secrets:
