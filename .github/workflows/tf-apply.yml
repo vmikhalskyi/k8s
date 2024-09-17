@@ -25,6 +25,7 @@ jobs:
     permissions:
       id-token: write  
       contents: read
+    environment: ${{ inputs.ENV }}
     steps:
       - name: Checkout Code 
         uses: actions/checkout@v4
