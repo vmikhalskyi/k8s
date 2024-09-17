@@ -15,7 +15,7 @@ spec:
     targetRevision: HEAD
     helm:
       valueFiles:
-      - HelmCharts/values/email-values.yaml
+      - ../values/email-values.yaml
 
   project: default
   syncPolicy:
