@@ -15,7 +15,7 @@ spec:
     targetRevision: HEAD
     helm:
       valueFiles:
-      - ../values/chipping-values.yaml
+      - ../values/shipping-values.yaml
 
   project: default
   syncPolicy:
