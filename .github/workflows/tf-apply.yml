@@ -36,7 +36,7 @@ jobs:
       - name: AWS Configure OIDC credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE }}
+          role-to-assume: arn:aws:iam::000685044917:role/gha-role-deploy
           audience: personal-aws-02
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
           role-session-name: terraform-apply-session
