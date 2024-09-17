@@ -58,7 +58,7 @@ jobs:
     if: (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/dev')
     uses: ./.github/workflows/tf-plan.yml
     with: 
-      ENV: ${{ github.event.inputs.environment }}
+      ENV: dev
     secrets:
       AWS_ROLE: ${{ secrets.AWS_ROLE_DEV }}
 
