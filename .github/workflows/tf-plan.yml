@@ -12,7 +12,6 @@ on:
 
 jobs:
   plan:
-    name: Terraform Plan
     runs-on: ubuntu-latest
     permissions:
       id-token: write  
