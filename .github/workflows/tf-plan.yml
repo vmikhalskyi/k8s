@@ -57,6 +57,7 @@ jobs:
         with:
           name: terraform-plan-${{ inputs.ENV }}
           path: "terraform/${{ inputs.ENV }}/tfplan-${{ inputs.ENV }}.out"
+          overwrite: true
 
       
 

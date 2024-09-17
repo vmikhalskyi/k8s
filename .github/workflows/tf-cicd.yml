@@ -72,7 +72,7 @@ jobs:
       TF_STATE_BUCKET: tfstate-mikhalskyi
       TF_STATE_PATH: dev-state/state.tfstate
     secrets:
-      AWS_ROLE: ${{ secrets.AWS_ROLE_DEV }}
+      AWS_ROLE: ${{ secrets.AWS_ROLE }}
 
       
 
