@@ -6,6 +6,12 @@ on:
       ENV:
         required: true
         type: string
+      TF_STATE_BUCKET:
+        required: true
+        type: string
+      TF_STATE_PATH:
+        required: true
+        type: string
     secrets:
       AWS_ROLE:
         required: true
