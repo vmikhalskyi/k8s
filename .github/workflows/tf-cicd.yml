@@ -58,6 +58,8 @@ jobs:
     uses: ./.github/workflows/tf-plan.yml
     with: 
       ENV: ${{ github.event.inputs.environment }}
+      TF_STATE_BUCKET: tfstate-mikhalskyi
+      TF_STATE_PATH: dev-state/state.tfstate
     secrets:
       AWS_ROLE: ${{ secrets.AWS_ROLE_DEV }}
 

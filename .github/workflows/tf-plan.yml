@@ -6,6 +6,12 @@ on:
       ENV:
         required: true
         type: string
+      TF_STATE_BUCKET:
+        required: true
+        type: string
+      TF_STATE_PATH:
+        required: true
+        type: string
     secrets:
       AWS_ROLE:
         required: true
@@ -32,7 +38,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: "terraform/${{ inputs.ENV }}"
-        run: terraform init
+        run: terraform init -backend-config="bucket=${{ inputs.TF_STATE_BUCKET }}" -backend-config="key=${{ inputs.TF_STATE_PATH }}" -backend-config="region=us-east-1"
 
       - name: Terraform Validate
         working-directory: "terraform/${{ inputs.ENV }}"
