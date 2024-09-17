@@ -4,11 +4,13 @@ on:
   pull_request:
     branches:
       - dev
+      - release
     paths:
       - 'terraform/**'
   push:
     branches:
       - dev
+      - release
     paths:
       - 'terraform/**'
   workflow_dispatch:
@@ -51,14 +53,20 @@ jobs:
             -Dsonar.organization=vmikhalskyi
             -Dsonar.projectKey=k8s
   
-  build:
+  plan_dev:
     name: Terraform plan 
     runs-on: ubuntu-latest
+    if: (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/dev')
     steps:
       - name: Checkout Code 
         uses: actions/checkout@v4
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+      - name: Terraform Validate
+        working-directory: "terraform/${{ github.event.inputs.environment }}"
+        run: terraform validate
+
+      
 
 
 

@@ -1,0 +1,53 @@
+name: Reusable Terraform Plan Workflow
+
+on:
+  workflow_call:
+    inputs:
+      ENV:
+        required: true
+        type: string
+    secrets:
+      AWS_ROLE:
+        required: true
+
+jobs:
+  plan_dev:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  
+      contents: read
+    steps:
+      - name: Checkout Code 
+        uses: actions/checkout@v4
+        
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        
+      - name: Terraform Validate
+        working-directory: "terraform/${{ inputs.ENV }}"
+        run: terraform validate
+
+      - name: AWS Configure OIDC credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          audience: personal-aws-02
+          aws-region: us-east-1
+
+      - name: Terraform Init
+        working-directory: "terraform/${{ inputs.ENV }}"
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: "terraform/${{ inputs.ENV }}"
+        run: terraform plan -out=tfplan-${{ inputs.ENV }}.out
+
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-${{ inputs.ENV }}
+          path: "terraform/${{ inputs.ENV }}/tfplan-${{ inputs.ENV }}.out"
+
+      
+
