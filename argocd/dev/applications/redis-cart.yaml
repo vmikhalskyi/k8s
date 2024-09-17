@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name     : redis-cart-app
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    name     : in-cluster
+    namespace: development
+  source:
+    path   : "HelmCharts/redis"
+    repoURL: "git@github.com:vmikhalskyi/k8s.git"
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+      - ../values/redis-cart-values.yaml
+
+  project: default
+  syncPolicy:
+    automated:
+      prune   : true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true         

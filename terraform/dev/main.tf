@@ -52,5 +52,5 @@ module "argocd-root" {
     git_source_path = var.git_source_path
     git_source_repo_url = var.git_source_repo_url
     git_source_target_revision = var.git_source_target_revision
-    depends_on = [ module.k8s-cluster ]
+    depends_on = [ module.k8s-cluster, module.argocd-initial ]
 }
