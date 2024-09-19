@@ -63,4 +63,12 @@ module "k8s-metrics-server" {
 module "k8s-cluster-autoscaler" {
     source = "../modules/k8s-cluster-autoscaler"
     cluster_name = module.k8s-cluster.eks_cluster_endpoint.name
+    depends_on = [ module.k8s-node-group ]
+}
+
+module "k8s-aws-lb-controller" {
+    source = "../modules/k8s-aws-lb-controller"
+    cluster_name = module.k8s-cluster.eks_cluster_endpoint.name
+    vpc_id = module.network.vpc.id
+    depends_on = [ module.k8s-node-group ]
 }

@@ -2,13 +2,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: frontend-hpa
-  namespace: development
+  name: "{{ .Values.appName }}-hpa"
+  namespace: {{ .Values.namespaceName }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: frontend-deployment
+    name: "{{ .Values.appName }}-deployment"
   minReplicas: 1
   maxReplicas: 5
   metrics:
@@ -17,7 +17,7 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 40
     - type: Resource
       resource:
         name: memory
