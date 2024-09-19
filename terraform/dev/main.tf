@@ -54,3 +54,13 @@ module "argocd-root" {
     git_source_target_revision = var.git_source_target_revision
     depends_on = [ module.k8s-cluster, module.argocd-initial ]
 }
+
+module "k8s-metrics-server" {
+    source = "../modules/k8s-metrics-server"
+    depends_on = [ module.k8s-node-group ]
+}
+
+module "k8s-cluster-autoscaler" {
+    source = "../modules/k8s-cluster-autoscaler"
+    cluster_name = module.k8s-cluster.eks_cluster_endpoint.name
+}

@@ -8,5 +8,4 @@ terraform init \
   -backend-config="bucket=<bucket-name>" \
   -backend-config="key=<path>" \
   -backend-config="region=<region>"
-
 ```

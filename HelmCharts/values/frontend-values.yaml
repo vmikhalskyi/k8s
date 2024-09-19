@@ -1,6 +1,5 @@
 appName: frontend
 namespaceName: development
-appReplicasCount: 1
 appImage: gcr.io/google-samples/microservices-demo/frontend
 appVersion: v0.10.1
 containerPort: 8080
