@@ -72,3 +72,9 @@ module "k8s-aws-lb-controller" {
     vpc_id = module.network.vpc.id
     depends_on = [ module.k8s-node-group ]
 }
+
+module "k8s-prometheus" {
+    source = "../modules/k8s-prometheus"
+    cluster_name = module.k8s-cluster.eks_cluster_endpoint.name
+    depends_on = [ module.k8s-node-group ]
+}

@@ -44,6 +44,7 @@ variable "eks_addons" {
     "kube-proxy"                = "kube-proxy"
     "vpc-cni"                   = "vpc-cni"
     "eks-pod-identity-webhook"  = "eks-pod-identity-agent"
+    "aws-ebs-csi-driver"        = "aws-ebs-csi-driver"
   }
 }
 
