@@ -1,0 +1,50 @@
+{
+    "family": "cart-service", 
+    "networkMode": "awsvpc", 
+    "containerDefinitions": [
+      {
+        "name": "cart-container",
+        "image": "gcr.io/google-samples/microservices-demo/cartservice:v0.10.1",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 7070,
+            "hostPort": 7070,
+            "protocol": "tcp",
+            "appProtocol": "grpc",
+            "name": "cart-service"
+          }
+        ],
+        "environment": [
+          {
+            "name": "PORT",
+            "value": "7070"
+          },
+          {
+            "name": "DISABLE_PROFILER",
+            "value": "1"
+          },
+          {
+            "name": "REDIS_ADDR",
+            "value": "redis-cart-service.mikhalskyi:6379"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/cart-service",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+    ],
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::000685044917:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::000685044917:role/ecs-task-role"
+  }
+  

@@ -55,10 +55,10 @@ module "argocd-root" {
     depends_on = [ module.k8s-cluster, module.argocd-initial ]
 }
 
-module "k8s-metrics-server" {
-    source = "../modules/k8s-metrics-server"
-    depends_on = [ module.k8s-node-group ]
-}
+# module "k8s-metrics-server" {
+#     source = "../modules/k8s-metrics-server"
+#     depends_on = [ module.k8s-node-group ]
+# }
 
 module "k8s-cluster-autoscaler" {
     source = "../modules/k8s-cluster-autoscaler"

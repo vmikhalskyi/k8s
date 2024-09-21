@@ -25,7 +25,8 @@ resource "aws_route_table" "eks_public_route_table" {
   }
 
   tags = {
-    Name = "eks-public-route-table"
+    Name      = "eks-public-route-table"
+    terraform = "true"  
   }
 }
 

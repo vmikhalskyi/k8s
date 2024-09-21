@@ -1,0 +1,70 @@
+{
+    "family": "checkout-service", 
+    "networkMode": "awsvpc", 
+    "containerDefinitions": [
+      {
+        "name": "checkout-container",
+        "image": "gcr.io/google-samples/microservices-demo/checkoutservice:v0.10.1",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 5050,
+            "hostPort": 5050,
+            "protocol": "tcp",
+            "appProtocol": "grpc",
+            "name": "checkout-service"
+          }
+        ],
+        "environment": [
+          {
+            "name": "PORT",
+            "value": "5050"
+          },
+          {
+            "name": "DISABLE_PROFILER",
+            "value": "1"
+          },
+          {
+            "name": "PRODUCT_CATALOG_SERVICE_ADDR",
+            "value": "productcatalog-service.mikhalskyi:3550"
+          },
+          {
+            "name": "SHIPPING_SERVICE_ADDR",
+            "value": "shipping-service.mikhalskyi:50051"
+          },
+          {
+            "name": "PAYMENT_SERVICE_ADDR",
+            "value": "payment-service.mikhalskyi:50051"
+          },
+          {
+            "name": "EMAIL_SERVICE_ADDR",
+            "value": "email-service.mikhalskyi:5000"
+          },
+          {
+            "name": "CURRENCY_SERVICE_ADDR",
+            "value": "currency-service.mikhalskyi:7000"
+          },
+          {
+            "name": "CART_SERVICE_ADDR",
+            "value": "cart-service.mikhalskyi:7070"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/checkout-service",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+    ],
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::000685044917:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::000685044917:role/ecs-task-role"
+  }
+  

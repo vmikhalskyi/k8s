@@ -1,0 +1,35 @@
+{
+    "family": "redis-cart-service", 
+    "networkMode": "awsvpc", 
+    "containerDefinitions": [
+      {
+        "name": "redis-cart-container",
+        "image": "redis:alpine",
+        "cpu": 512,
+        "memory": 1024,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 6379,
+            "hostPort": 6379,
+            "protocol": "tcp",
+            "name": "redis-cart-service"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/redis-cart-service",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+    ],
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "512",
+    "memory": "1024",
+    "executionRoleArn": "arn:aws:iam::000685044917:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::000685044917:role/ecs-task-role"
+  }
+  

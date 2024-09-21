@@ -1,0 +1,45 @@
+{
+    "family": "productcatalog-service", 
+    "networkMode": "awsvpc", 
+    "containerDefinitions": [
+      {
+        "name": "productcatalog-container",
+        "image": "gcr.io/google-samples/microservices-demo/productcatalogservice:v0.10.1",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 3550,
+            "hostPort": 3550,
+            "protocol": "tcp",
+            "appProtocol": "grpc",
+            "name": "productcatalog-service"
+          }
+        ],
+        "environment": [
+          {
+            "name": "PORT",
+            "value": "3550"
+          },
+          {
+            "name": "DISABLE_PROFILER",
+            "value": "1"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/productcatalog-service",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+    ],
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::000685044917:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::000685044917:role/ecs-task-role"
+}

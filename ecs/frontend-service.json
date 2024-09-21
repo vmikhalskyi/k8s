@@ -1,0 +1,86 @@
+{
+    "family": "frontend-service", 
+    "networkMode": "awsvpc", 
+    "containerDefinitions": [
+      {
+        "name": "frontend-container",
+        "image": "gcr.io/google-samples/microservices-demo/frontend:v0.10.1",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 8080,
+            "hostPort": 8080,
+            "protocol": "tcp",
+            "name": "frontend-service",
+            "appProtocol": "http"
+          }
+        ],
+        "environment": [
+          {
+            "name": "PORT",
+            "value": "8080"
+          },
+          {
+            "name": "PRODUCT_CATALOG_SERVICE_ADDR",
+            "value": "productcatalog-service.mikhalskyi:3550"
+          },
+          {
+            "name": "SHIPPING_SERVICE_ADDR",
+            "value": "shipping-service.mikhalskyi:50051"
+          },
+          {
+            "name": "PAYMENT_SERVICE_ADDR",
+            "value": "payment-service.mikhalskyi:50051"
+          },
+          {
+            "name": "EMAIL_SERVICE_ADDR",
+            "value": "email-service.mikhalskyi:8080"
+          },
+          {
+            "name": "CURRENCY_SERVICE_ADDR",
+            "value": "currency-service.mikhalskyi:7000"
+          },
+          {
+            "name": "CART_SERVICE_ADDR",
+            "value": "cart-service.mikhalskyi:7070"
+          },
+          {
+            "name": "RECOMMENDATION_SERVICE_ADDR",
+            "value": "recommendation-service.mikhalskyi:8080"
+          },
+          {
+            "name": "CHECKOUT_SERVICE_ADDR",
+            "value": "checkout-service.mikhalskyi:5050"
+          },
+          {
+            "name": "AD_SERVICE_ADDR",
+            "value": "ad-service.mikhalskyi:9555"
+          },
+          {
+            "name": "ENABLE_PROFILER",
+            "value": "0"
+          },
+          {
+            "name": "SHOPPING_ASSISTANT_SERVICE_ADDR",
+            "value": "shoppingassistantservice.mikhalskyi:80"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/frontend-service",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+    ],
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::000685044917:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::000685044917:role/ecs-task-role"
+  }
+  

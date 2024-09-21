@@ -1,0 +1,46 @@
+{
+    "family": "ad-service", 
+    "networkMode": "awsvpc", 
+    "containerDefinitions": [
+      {
+        "name": "ad-container",
+        "image": "gcr.io/google-samples/microservices-demo/adservice:v0.10.1",
+        "cpu": 256,
+        "memory": 512,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 9555,
+            "hostPort": 9555,
+            "protocol": "tcp",
+            "appProtocol": "grpc",
+            "name": "ad-service"
+          }
+        ],
+        "environment": [
+          {
+            "name": "PORT",
+            "value": "9555"
+          },
+          {
+            "name": "DISABLE_PROFILER",
+            "value": "1"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/ad-service",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+    ],
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::000685044917:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::000685044917:role/ecs-task-role"
+  }
+  

@@ -11,7 +11,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: frontend-deployment
+    app: frontend
   ports:
   - port: 8000
     targetPort: 8080
