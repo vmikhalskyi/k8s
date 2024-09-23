@@ -1,3 +1,9 @@
+variable "env" {
+  description = "Environment"
+  type        = string
+  default     = "dev"
+}
+
 variable "availability_zones" {
   description = "List of availability zones to be used"
   type        = list(string)
